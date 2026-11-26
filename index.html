@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Laine — Portfolio · Lagom</title>
-<meta name="description" content="Laine 的主页：把想法，做成看得见的东西。" />
+<meta name="description" content="Laine 的主页 · 作品集：把想法，做成看得见的东西。北欧极简风格作品集。" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%23f6f5f2'/><circle cx='16' cy='16' r='6' fill='%233f6d8e'/></svg>" />
 <script>
   (function () {
@@ -355,7 +355,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
     gap: clamp(1.2rem, 3vw, 2.4rem);
-    align-items: start;
+    align-items: stretch;
   }
   .about-card {
     background: var(--surface);
@@ -444,6 +444,7 @@
   .cover.c4 { --cv: #e2ebdf; --orb: #cfdfca; }
   .cover.c5 { --cv: #dde9f0; --orb: #c6dbe8; }
   .cover.c6 { --cv: #ebe3d8; --orb: #ded2c0; }
+  .cover.c7 { --cv: #e6e2ee; --orb: #d6d0e2; }
 
   .cover::before {
     content: "";
@@ -510,6 +511,7 @@
   [data-theme="night"] .cover.c4 { --cv: #1e2a22; --orb: #2a3a2e; }
   [data-theme="night"] .cover.c5 { --cv: #1c2a33; --orb: #263a47; }
   [data-theme="night"] .cover.c6 { --cv: #27221c; --orb: #3a3227; }
+  [data-theme="night"] .cover.c7 { --cv: #24222c; --orb: #332f3f; }
   .card-body {
     display: flex;
     flex-direction: column;
@@ -567,6 +569,102 @@
   .card.is-static { cursor: default; }
   .card.is-static:hover { transform: translateY(-5px); }
   .card.is-static:hover .arrow { background: var(--surface); border-color: var(--line-2); color: var(--ink); transform: none; }
+
+  /* 整张卡可点击（小程序） */
+  button.card {
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  button.card:focus-visible { outline: 2px solid var(--fjord); outline-offset: 3px; }
+
+  /* ---------- 小程序弹框 ---------- */
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: grid;
+    place-items: center;
+    padding: 1.2rem;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .26s ease, visibility .26s;
+  }
+  .modal.is-open { visibility: visible; opacity: 1; }
+  .modal-mask {
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 26, 30, .46);
+    backdrop-filter: blur(5px);
+  }
+  .modal-panel {
+    position: relative;
+    width: min(364px, 100%);
+    padding: 1.55rem 1.5rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-l);
+    box-shadow: var(--sh-3);
+    text-align: center;
+    transform: translateY(12px) scale(.98);
+    transition: transform .3s cubic-bezier(.22, .9, .28, 1);
+  }
+  .modal.is-open .modal-panel { transform: none; }
+  .modal-panel .label { display: block; }
+  .modal-panel h3 { margin: .5rem 0 .35rem; font-size: 1.18rem; }
+  .modal-panel p { margin: 0 auto; max-width: 30ch; font-size: .82rem; line-height: 1.75; color: var(--muted); }
+  .mp-qr {
+    width: 180px;
+    height: 180px;
+    margin: 1.15rem auto .1rem;
+    display: grid;
+    place-content: center;
+    gap: .25rem;
+    border: 1px dashed var(--line-2);
+    border-radius: 18px;
+    background: var(--surface-2);
+    color: var(--faint);
+  }
+  .mp-qr span { font-family: var(--mono); font-size: .6rem; letter-spacing: .16em; }
+  .mp-qr small { font-size: .66rem; }
+  .modal-x {
+    position: absolute;
+    top: .7rem; right: .7rem;
+    width: 30px; height: 30px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line-2);
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  .modal-x:hover { color: var(--ink); border-color: var(--ink); }
+  .modal-x svg { width: 11px; height: 11px; }
+  body.lock { overflow: hidden; }
+  @media (prefers-reduced-motion: reduce) {
+    .modal, .modal-panel { transition: none; }
+  }
+
+  /* 第七张：收尾卡片横向铺满，避免最后一排孤零零一张 */
+  @media (min-width: 680px) {
+    .card.wide { grid-column: 1 / -1; flex-direction: row; }
+    .card.wide .cover {
+      width: 36%;
+      min-width: 216px;
+      height: auto;
+      flex: none;
+    }
+    .card.wide .cover .c-num { font-size: 8rem; }
+    .card.wide .card-body { justify-content: center; padding: clamp(1.2rem, 2.4vw, 1.7rem) clamp(1.4rem, 3vw, 2.1rem); }
+    .card.wide .card-foot { margin-top: 1rem; }
+    .card.wide p { max-width: 56ch; }
+  }
 
   /* ---------- Lagom 流程 ---------- */
   .steps {
@@ -737,10 +835,10 @@
       <div class="rev">
         <span class="label">Portfolio — Lagom · 2026</span>
         <h1>把想法，做成<br /><span class="hl">看得见</span>的东西。</h1>
-        <p class="lede">7个项目，从组件库到内容产品。能公开访问的都留了入口，点开就能看到实物；还没有地址的，就先留个位置。不多做，也不欠做。</p>
+        <p class="lede">七个项目，从组件库到内容产品。能公开访问的都留了入口，点开就能看到实物；还没有地址的，就先留个位置。不多做，也不欠做。</p>
         <div class="acts">
           <a class="btn primary" href="#works">
-            看六件作品
+            看七件作品
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
           <a class="btn ghost" href="#contact">
@@ -766,7 +864,7 @@
 
         <div class="day-rows">
           <div class="day-row"><span>方向</span><b>前端 · 视觉</b></div>
-          <div class="day-row"><span>常用</span><b>Vue 3 · VitePress</b></div>
+          <div class="day-row"><span>常用</span><b>React · Node · Python</b></div>
           <div class="day-row"><span>更新</span><b>2026.11</b></div>
         </div>
       </aside>
@@ -774,7 +872,7 @@
 
     <!-- 数据 -->
     <section class="stats" aria-label="概览">
-      <div class="stat tint-1 rev"><b>6</b><span>件作品 · 全部可看</span></div>
+      <div class="stat tint-1 rev"><b>7</b><span>件作品 · 全部可看</span></div>
       <div class="stat tint-2 rev"><b>100+</b><span>GitHub stars</span></div>
       <div class="stat tint-3 rev"><b>Vue 3</b><span>日常工具与栈</span></div>
     </section>
@@ -800,20 +898,20 @@
             合作过的团队不大，但也算各有脾气，学到最多的是耐心。
           </p>
           <div class="quote">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5L19.5 6.5"/></svg>
             慢慢做，认真收尾。
           </div>
         </div>
 
         <aside class="mat rev">
-          <span class="label">Material / 材料</span>
+          <span class="label">Verktøy / 工具</span>
           <ul>
-            <li><span>界面</span><b>Vue 3 · Vite</b></li>
+            <li><span>前端</span><b>React · Vue 3</b></li>
+            <li><span>服务</span><b>Node · Python</b></li>
             <li><span>内容</span><b>VitePress · Markdown</b></li>
-            <li><span>数据</span><b>检索 · 结构化</b></li>
             <li><span>部署</span><b>GitHub Pages · Vercel</b></li>
           </ul>
-          <p class="foot">这一页是示例内容，文字与项目均取自公开资料，仅作排版练习。</p>
+          <p class="foot">工具会换，顺手和合适才留得下来。</p>
         </aside>
       </div>
     </section>
@@ -825,7 +923,7 @@
           <span class="label">02 — Utvalgt / 作品</span>
           <h2>做过的东西</h2>
         </div>
-        <span class="meta">01 — 06</span>
+        <span class="meta">01 — 07</span>
       </div>
 
       <div class="grid">
@@ -863,11 +961,28 @@
           </div>
         </a>
 
-        <a class="card rev" href="https://emoji.ikuncool.top/" target="_blank" rel="noopener">
+        <button class="card rev" type="button" id="mpCard" aria-haspopup="dialog" aria-controls="mpModal">
           <div class="cover c3">
+            <span class="c-label">City Guide</span>
+            <span class="badge">暂无外链</span>
+            <span class="c-num" aria-hidden="true">03</span>
+          </div>
+          <div class="card-body">
+            <div class="card-top"><h3>跟着博主去探店</h3><span class="kind">WeChat</span></div>
+            <p>收录美食博主亲测过、值得一去的宝藏小店，按街区与品类整理，翻一翻就知道下一家去哪。</p>
+            <div class="tags"><span class="tag">微信</span><span class="tag">探店</span><span class="tag">收藏</span></div>
+            <div class="card-foot">
+              <span class="u">查看小程序</span>
+              <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
+            </div>
+          </div>
+        </button>
+
+        <a class="card rev" href="https://emoji.ikuncool.top/" target="_blank" rel="noopener">
+          <div class="cover c4">
             <span class="c-label">Symbol Library</span>
             <span class="badge">已上线</span>
-            <span class="c-num" aria-hidden="true">03</span>
+            <span class="c-num" aria-hidden="true">04</span>
           </div>
           <div class="card-body">
             <div class="card-top"><h3>emoji 博物馆</h3><span class="kind">Tools</span></div>
@@ -881,10 +996,10 @@
         </a>
 
         <div class="card is-static rev">
-          <div class="cover c4">
+          <div class="cover c5">
             <span class="c-label">Mini Program</span>
             <span class="badge">暂无外链</span>
-            <span class="c-num" aria-hidden="true">04</span>
+            <span class="c-num" aria-hidden="true">05</span>
           </div>
           <div class="card-body">
             <div class="card-top"><h3>资源分享小程序</h3><span class="kind">WeChat</span></div>
@@ -898,10 +1013,10 @@
         </div>
 
         <a class="card rev" href="https://blog.ikuncool.top/" target="_blank" rel="noopener">
-          <div class="cover c5">
+          <div class="cover c6">
             <span class="c-label">Journal</span>
             <span class="badge">已上线</span>
-            <span class="c-num" aria-hidden="true">05</span>
+            <span class="c-num" aria-hidden="true">06</span>
           </div>
           <div class="card-body">
             <div class="card-top"><h3>个人博客</h3><span class="kind">Blog</span></div>
@@ -914,11 +1029,11 @@
           </div>
         </a>
 
-        <a class="card rev" href="https://rx-dog.vercel.app" target="_blank" rel="noopener">
-          <div class="cover c6">
+        <a class="card rev wide" href="https://rx-dog.vercel.app" target="_blank" rel="noopener">
+          <div class="cover c7">
             <span class="c-label">Search Tool</span>
             <span class="badge">已上线</span>
-            <span class="c-num" aria-hidden="true">06</span>
+            <span class="c-num" aria-hidden="true">07</span>
           </div>
           <div class="card-body">
             <div class="card-top"><h3>原研药查询</h3><span class="kind">Data</span></div>
@@ -985,13 +1100,30 @@
       </div>
 
       <footer>
-        <span>© 2026 Laine · 示例页面</span>
+        <span>© 2026 Laine</span>
         <span class="mono">内容参考自 blog.ikuncool.top/portfolio2</span>
         <a href="#top">回到顶部 ↑</a>
       </footer>
     </section>
   </div>
 </main>
+
+  <!-- 小程序弹框 -->
+  <div class="modal" id="mpModal" role="dialog" aria-modal="true" aria-labelledby="mpTitle" aria-hidden="true">
+    <div class="modal-mask" data-close></div>
+    <div class="modal-panel">
+      <button class="modal-x" type="button" data-close aria-label="关闭">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <span class="label">WeChat Mini Program</span>
+      <h3 id="mpTitle">跟着博主去探店</h3>
+      <p>美食博主亲测的宝藏小店，按街区与品类收好，扫码打开就能跟着逛。</p>
+      <div class="mp-qr">
+        <span>小程序码</span>
+        <small>待补充</small>
+      </div>
+    </div>
+  </div>
 
 <script>
   (function () {
@@ -1027,6 +1159,44 @@
     } else {
       revs.forEach(function (el) { el.classList.add('in'); });
     }
+  })();
+
+  (function () {
+    var card = document.getElementById('mpCard');
+    var modal = document.getElementById('mpModal');
+    if (!card || !modal) return;
+    var lastFocus = null;
+
+    function open() {
+      lastFocus = document.activeElement;
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('lock');
+      var x = modal.querySelector('.modal-x');
+      if (x) setTimeout(function () { x.focus(); }, 40);
+    }
+    function close() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('lock');
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    card.addEventListener('click', open);
+    modal.addEventListener('click', function (e) {
+      if (e.target.closest('[data-close]')) close();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (!modal.classList.contains('is-open')) return;
+      if (e.key === 'Escape') { close(); return; }
+      if (e.key === 'Tab') {
+        var f = modal.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])');
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
   })();
 </script>
 </body>
